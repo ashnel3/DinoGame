@@ -5,6 +5,8 @@
 *.cfg     text
 
 *.svg     text
+*.ase     binary
+*.aseprite binary
 *.png     binary
 *.jpg     binary
 *.jpeg    binary
