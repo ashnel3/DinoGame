@@ -32,6 +32,7 @@ func flip_sprite(x: int) -> void:
     """Flip player sprite
     x - x direction
     """
+    if x == 0: return
     if x < 1:
         sprite.flip_h = true
     else:
