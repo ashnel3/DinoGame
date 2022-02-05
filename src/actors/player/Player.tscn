@@ -1,26 +1,48 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://actors/player/Player.gd" type="Script" id=1]
+[ext_resource path="res://actors/player/dinos.png" type="Texture" id=2]
 
-[sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 6, 10 )
+[sub_resource type="CapsuleShape2D" id=4]
+radius = 5.0
+height = 7.0
+
+[sub_resource type="AnimationNodeTransition" id=2]
+input_count = 3
+input_0/name = "movement"
+input_0/auto_advance = false
+input_1/name = "kick"
+input_1/auto_advance = false
+input_2/name = "throw"
+input_2/auto_advance = false
+
+[sub_resource type="AnimationNodeBlendTree" id=3]
+graph_offset = Vector2( -390.667, 73.7643 )
+nodes/actions/node = SubResource( 2 )
+nodes/actions/position = Vector2( 53.3333, 93.3333 )
+node_connections = [ "output", 0, "actions" ]
 
 [node name="Player" type="KinematicBody2D"]
 script = ExtResource( 1 )
 
-[node name="ColorRect" type="ColorRect" parent="."]
-margin_left = -7.0
-margin_top = -10.0
-margin_right = 7.0
-margin_bottom = 10.0
-color = Color( 0.521569, 0.74902, 0.247059, 1 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource( 1 )
-
 [node name="Camera2D" type="Camera2D" parent="."]
 current = true
 zoom = Vector2( 0.5, 0.5 )
+
+[node name="Sprite" type="Sprite" parent="."]
+texture = ExtResource( 2 )
+hframes = 24
+vframes = 4
+frame = 14
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2( -0.5, 0.5 )
+shape = SubResource( 4 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+root_node = NodePath("../AnimationTree")
+
+[node name="AnimationTree" type="AnimationTree" parent="."]
+tree_root = SubResource( 3 )
+anim_player = NodePath("../AnimationPlayer")
+parameters/actions/current = 0

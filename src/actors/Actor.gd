@@ -4,6 +4,9 @@ class_name Actor
 export(float, 0, 1) var ACCELERATION = 0.1
 export(float) var SPEED = 3.0
 export(int) var GRAVITY = 1
+
+export(int) var health = 100
+
 var velocity = Vector2()
 
 
