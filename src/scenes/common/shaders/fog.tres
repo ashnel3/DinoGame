@@ -1,0 +1,47 @@
+[gd_resource type="Shader" format=2]
+
+[resource]
+code = "shader_type canvas_item;
+
+// Gonkee's fog shader for Godot 3 - full tutorial https://youtu.be/QEaTsz_0o44
+
+// TODO: implement perlin noise texture
+
+uniform vec4 color : hint_color;
+uniform float speed = 0.5;
+uniform int passes = 4;
+
+float rand (vec2 coords) {
+	return fract(sin(dot(coords, vec2(56, 78)) * 1000.0) * 1000.0);
+}
+
+float noise (vec2 coords) {
+	vec2 i = floor(coords);
+	vec2 f = fract(coords);
+
+	float p = rand(i);
+	float p1 = rand(i + vec2(1.0, 0.0));
+	float p2 = rand(i + vec2(0.0, 1.0));
+	float p3 = rand(i + vec2(1.0, 1.0));
+	vec2 cubic = f * f * (3.0 - 2.0 * f);
+
+	return mix(p, p1, cubic.x) + (p2 - p) * cubic.y * (1.0 - cubic.x) + (p3 - p1) * cubic.x * cubic.y;
+}
+
+float fractal (vec2 coords) {
+	float v = 0.0;
+	float s = 0.5;
+	for (int i = 0; i < passes; ++i) {
+		v += noise(coords) * s;
+		coords *= 2.0;
+		s *= 0.5;
+	}
+	return v;
+}
+
+void fragment () {
+	vec2 coords = UV * 20.0;
+	vec2 motion = vec2(fractal(coords + vec2(TIME * -speed, TIME * speed)));
+	float final = fractal(coords + motion);
+	COLOR = vec4(color.r, color.g, color.b, final * 0.5) * color.a;
+}"

@@ -1,0 +1,109 @@
+[gd_scene load_steps=9 format=2]
+
+[ext_resource path="res://actors/player/Player.tscn" type="PackedScene" id=1]
+[ext_resource path="res://scenes/level2/assets/bg5.png" type="Texture" id=2]
+[ext_resource path="res://scenes/level2/assets/spike.png" type="Texture" id=3]
+[ext_resource path="res://scenes/common/shaders/fog.tres" type="Shader" id=4]
+
+[sub_resource type="ShaderMaterial" id=4]
+shader = ExtResource( 4 )
+shader_param/color = Color( 0.298039, 0.137255, 0.0823529, 1 )
+shader_param/speed = 0.5
+shader_param/passes = 4
+
+[sub_resource type="OpenSimplexNoise" id=2]
+
+[sub_resource type="NoiseTexture" id=3]
+noise = SubResource( 2 )
+
+[sub_resource type="RectangleShape2D" id=1]
+
+[node name="Level2" type="Node2D"]
+
+[node name="BG" type="Node2D" parent="."]
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="ParallaxBackground" type="ParallaxBackground" parent="BG"]
+
+[node name="ColorRect" type="ColorRect" parent="BG/ParallaxBackground"]
+margin_left = -1550.0
+margin_top = -18.0
+margin_right = 1450.0
+margin_bottom = 982.0
+rect_min_size = Vector2( 2000, 0 )
+color = Color( 0, 0, 0, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ColorRect2" type="ColorRect" parent="BG/ParallaxBackground"]
+margin_left = -1500.0
+margin_top = -500.0
+margin_right = 1500.0
+rect_min_size = Vector2( 2000, 0 )
+color = Color( 0.203922, 0.0980392, 0.0588235, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ParallaxLayer" type="ParallaxLayer" parent="BG/ParallaxBackground"]
+motion_scale = Vector2( 0.6, 0.6 )
+motion_mirroring = Vector2( 1024, 1024 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="FogSprite" type="Sprite" parent="BG/ParallaxBackground/ParallaxLayer"]
+material = SubResource( 4 )
+scale = Vector2( 2, 2 )
+texture = SubResource( 3 )
+centered = false
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="ParallaxLayer2" type="ParallaxLayer" parent="BG/ParallaxBackground"]
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="BGSprite" type="Sprite" parent="BG/ParallaxBackground/ParallaxLayer2"]
+scale = Vector2( 2, 2 )
+texture = ExtResource( 2 )
+centered = false
+region_rect = Rect2( 0, 64, 384, 64 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="ParallaxLayer3" type="ParallaxLayer" parent="BG/ParallaxBackground"]
+motion_scale = Vector2( 0.7, 0.7 )
+
+[node name="SpikeTexture" type="Sprite" parent="BG/ParallaxBackground/ParallaxLayer3"]
+position = Vector2( -150, 300 )
+texture = ExtResource( 3 )
+centered = false
+region_enabled = true
+region_rect = Rect2( 0, 0, 1024, 32 )
+
+[node name="Player" parent="." instance=ExtResource( 1 )]
+position = Vector2( 345, 235 )
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+position = Vector2( 345, 250 )
+scale = Vector2( 20, 0.5 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+shape = SubResource( 1 )
+
+[node name="ColorRect" type="ColorRect" parent="StaticBody2D"]
+margin_left = -10.0
+margin_top = -10.0
+margin_right = 10.0
+margin_bottom = 10.0
+color = Color( 0.788235, 0.584314, 0.262745, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
