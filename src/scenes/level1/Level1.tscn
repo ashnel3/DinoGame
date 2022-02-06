@@ -6,6 +6,16 @@
 
 [node name="Level1" type="Node2D"]
 
+[node name="ColorRect" type="ColorRect" parent="."]
+margin_left = -500.0
+margin_top = -300.0
+margin_right = 524.0
+margin_bottom = 300.0
+color = Color( 0, 0, 0, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="Player" parent="." instance=ExtResource( 1 )]
 position = Vector2( 0, -15 )
 

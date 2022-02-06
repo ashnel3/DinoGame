@@ -1,15 +1,22 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://actors/player/Player.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scenes/level2/assets/bg5.png" type="Texture" id=2]
 [ext_resource path="res://scenes/level2/assets/spike.png" type="Texture" id=3]
 [ext_resource path="res://scenes/common/shaders/fog.tres" type="Shader" id=4]
 
+[sub_resource type="OpenSimplexNoise" id=5]
+
+[sub_resource type="NoiseTexture" id=6]
+seamless = true
+noise = SubResource( 5 )
+
 [sub_resource type="ShaderMaterial" id=4]
 shader = ExtResource( 4 )
 shader_param/color = Color( 0.298039, 0.137255, 0.0823529, 1 )
-shader_param/speed = 0.5
-shader_param/passes = 4
+shader_param/speed = 0.05
+shader_param/passes = 1
+shader_param/noise_texture = SubResource( 6 )
 
 [sub_resource type="OpenSimplexNoise" id=2]
 
@@ -55,7 +62,9 @@ __meta__ = {
 "_edit_lock_": true
 }
 
-[node name="FogSprite" type="Sprite" parent="BG/ParallaxBackground/ParallaxLayer"]
+[node name="MultiMeshInstance2D" type="MultiMeshInstance2D" parent="BG/ParallaxBackground/ParallaxLayer"]
+
+[node name="FogSprite" type="Sprite" parent="BG/ParallaxBackground/ParallaxLayer/MultiMeshInstance2D"]
 material = SubResource( 4 )
 scale = Vector2( 2, 2 )
 texture = SubResource( 3 )
