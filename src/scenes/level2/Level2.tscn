@@ -5,15 +5,18 @@
 [ext_resource path="res://scenes/level2/assets/spike.png" type="Texture" id=3]
 [ext_resource path="res://scenes/common/shaders/fog.tres" type="Shader" id=4]
 
-[sub_resource type="OpenSimplexNoise" id=5]
+[sub_resource type="OpenSimplexNoise" id=7]
+period = 84.0
+persistence = 0.223
+lacunarity = 1.2
 
 [sub_resource type="NoiseTexture" id=6]
 seamless = true
-noise = SubResource( 5 )
+noise = SubResource( 7 )
 
 [sub_resource type="ShaderMaterial" id=4]
 shader = ExtResource( 4 )
-shader_param/color = Color( 0.298039, 0.137255, 0.0823529, 1 )
+shader_param/color = Color( 1, 1, 1, 0.52549 )
 shader_param/speed = 0.05
 shader_param/passes = 1
 shader_param/noise_texture = SubResource( 6 )

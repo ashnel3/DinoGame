@@ -3,7 +3,7 @@ class_name player
 
 const MAX_HEALTH = 100
 
-# Animation tree types
+# Animation tree values
 enum MovementTreeAnimations {
     IDLE,
     WALK
@@ -28,7 +28,12 @@ var animation_state = 0
 var direction = Vector2()
 
 
-func flip_sprite(x: int) -> void:
+func __reset_animation_state() -> void:
+    """Return to last movement animation"""
+    animation_state = 0
+
+
+func __flip_sprite(x: int) -> void:
     """Flip player sprite
     x - x direction
     """
@@ -39,6 +44,13 @@ func flip_sprite(x: int) -> void:
         sprite.flip_h = false
 
 
+func __animation_loop() -> void:
+    if abs(direction.x) > 0 or abs(direction.y) > 0:
+        animation_tree.set("parameters/movement/current", 1)
+    else:
+        animation_tree.set("parameters/movement/current", 0)
+
+
 func _ready():
     self.health = MAX_HEALTH
 
@@ -47,14 +59,14 @@ func _input(event):
     """Input capturing"""
     direction.x = int(Input.is_action_pressed("ui_right")) - int(Input.is_action_pressed("ui_left"))
     direction.y = int(Input.is_action_pressed("ui_down")) - int(Input.is_action_pressed("ui_up"))
-    if event.is_action_pressed("ui_select"):
+    if Input.is_action_pressed("ui_select"):
         direction.y = -1
-    flip_sprite(direction.x)
+    __flip_sprite(direction.x)
 
 
 func _process(delta):
-    """Process loop *(1 / frame)*"""
-    pass
+    """Process loop"""
+    __animation_loop()
 
 
 func _physics_process(delta):

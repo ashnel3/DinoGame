@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=17 format=2]
 
 [ext_resource path="res://actors/player/Player.gd" type="Script" id=1]
 [ext_resource path="res://actors/player/dinos.png" type="Texture" id=2]
@@ -7,20 +7,166 @@
 radius = 5.0
 height = 7.0
 
+[sub_resource type="Animation" id=5]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("../Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 0 ]
+}
+
+[sub_resource type="Animation" id=6]
+resource_name = "action_hurt"
+tracks/0/type = "value"
+tracks/0/path = NodePath("../Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.2, 0.3, 0.4, 0.5, 0.6, 0.8, 1 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 13, 14, 15, 16, 15, 16, 14, 13 ]
+}
+tracks/1/type = "method"
+tracks/1/path = NodePath("..")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 1.1 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [  ],
+"method": "__reset_animation_state"
+} ]
+}
+
+[sub_resource type="Animation" id=7]
+resource_name = "action_kick"
+length = 0.8
+step = 0.2
+tracks/0/type = "value"
+tracks/0/path = NodePath("../Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.2, 0.4, 0.6 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 10, 11, 12, 13 ]
+}
+tracks/1/type = "method"
+tracks/1/path = NodePath("..")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0.8 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [  ],
+"method": "__reset_animation_state"
+} ]
+}
+
+[sub_resource type="Animation" id=8]
+resource_name = "move_idle_loop"
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("../Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.2, 0.4, 0.6, 0.8 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 0, 1, 2, 3, 0 ]
+}
+
+[sub_resource type="Animation" id=9]
+resource_name = "move_walk_loop"
+length = 1.2
+loop = true
+step = 0.2
+tracks/0/type = "value"
+tracks/0/path = NodePath("../Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.2, 0.4, 0.6, 0.8, 1 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 4, 5, 6, 7, 8, 9 ]
+}
+
+[sub_resource type="AnimationNodeAnimation" id=13]
+animation = "action_hurt"
+
+[sub_resource type="AnimationNodeAnimation" id=11]
+animation = "move_idle_loop"
+
+[sub_resource type="AnimationNodeAnimation" id=14]
+animation = "action_kick"
+
+[sub_resource type="AnimationNodeTransition" id=10]
+input_count = 2
+input_0/name = "idle"
+input_0/auto_advance = false
+input_1/name = "walk"
+input_1/auto_advance = false
+
 [sub_resource type="AnimationNodeTransition" id=2]
-input_count = 3
+input_count = 4
 input_0/name = "movement"
 input_0/auto_advance = false
 input_1/name = "kick"
 input_1/auto_advance = false
 input_2/name = "throw"
 input_2/auto_advance = false
+input_3/name = "hurt"
+input_3/auto_advance = false
+
+[sub_resource type="AnimationNodeAnimation" id=15]
+animation = "action_kick"
+
+[sub_resource type="AnimationNodeAnimation" id=12]
+animation = "move_walk_loop"
 
 [sub_resource type="AnimationNodeBlendTree" id=3]
-graph_offset = Vector2( -390.667, 73.7643 )
-nodes/actions/node = SubResource( 2 )
-nodes/actions/position = Vector2( 53.3333, 93.3333 )
-node_connections = [ "output", 0, "actions" ]
+graph_offset = Vector2( -714.367, -84.7987 )
+nodes/hurt/node = SubResource( 13 )
+nodes/hurt/position = Vector2( -213.333, 346.667 )
+nodes/idle/node = SubResource( 11 )
+nodes/idle/position = Vector2( -440, -53.3333 )
+nodes/kick/node = SubResource( 14 )
+nodes/kick/position = Vector2( -213.333, 133.333 )
+nodes/movement/node = SubResource( 10 )
+nodes/movement/position = Vector2( -213.333, -26.6667 )
+nodes/output/position = Vector2( 266.667, 133.333 )
+nodes/root/node = SubResource( 2 )
+nodes/root/position = Vector2( 0, 66.6667 )
+nodes/temp/node = SubResource( 15 )
+nodes/temp/position = Vector2( -213.333, 240 )
+nodes/walk/node = SubResource( 12 )
+nodes/walk/position = Vector2( -440, 66.6667 )
+node_connections = [ "movement", 0, "idle", "movement", 1, "walk", "root", 0, "movement", "root", 1, "kick", "root", 2, "temp", "root", 3, "hurt", "output", 0, "root" ]
 
 [node name="Player" type="KinematicBody2D"]
 script = ExtResource( 1 )
@@ -38,10 +184,23 @@ vframes = 4
 position = Vector2( -0.5, 0.5 )
 shape = SubResource( 4 )
 
+[node name="Timers" type="Node" parent="."]
+
+[node name="BombTimer" type="Timer" parent="Timers"]
+
+[node name="KickTimer" type="Timer" parent="Timers"]
+
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 root_node = NodePath("../AnimationTree")
+anims/RESET = SubResource( 5 )
+anims/action_hurt = SubResource( 6 )
+anims/action_kick = SubResource( 7 )
+anims/move_idle_loop = SubResource( 8 )
+anims/move_walk_loop = SubResource( 9 )
 
 [node name="AnimationTree" type="AnimationTree" parent="."]
 tree_root = SubResource( 3 )
 anim_player = NodePath("../AnimationPlayer")
-parameters/actions/current = 0
+active = true
+parameters/movement/current = 0
+parameters/root/current = 0

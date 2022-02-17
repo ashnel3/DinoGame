@@ -16,9 +16,9 @@ func actor_fly(delta: float, direction: Vector2):
 
 
 func actor_move(delta: float, direction: Vector2):
-    if direction.y == -1 and is_on_floor():
-        velocity.y =  100 * -SPEED
-    else:
+    if not is_on_floor():
         velocity.y += GRAVITY / delta * 0.3
+    elif direction.y == -1:
+        velocity.y =  100 * -SPEED
     velocity.x = lerp(direction.x / delta * SPEED, 0, ACCELERATION)
     velocity = move_and_slide_with_snap(velocity, Vector2.DOWN, Vector2.UP)

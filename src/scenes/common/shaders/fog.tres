@@ -7,7 +7,7 @@ code = "shader_type canvas_item;
 
 uniform sampler2D noise_texture : hint_black;
 uniform vec4 color : hint_color;
-uniform float speed = 0.5;
+uniform float speed = 0.1;
 uniform int passes = 1;
 
 float fractal (vec2 coords) {
@@ -25,5 +25,5 @@ void fragment () {
 	vec2 coords = UV * 2.0;
 	vec2 motion = vec2(fractal(coords + vec2(TIME * -speed, TIME * speed)));
 	float final = fractal(coords + motion);
-	COLOR = vec4(color.r, color.g, color.b, final * 0.5) * color.a;
+	COLOR = vec4(color.r, color.g, color.b, final) * color.a;
 }"
