@@ -23,6 +23,7 @@ onready var sprite = $FlipContainer/Sprite
 onready var animation_player = $AnimationPlayer
 onready var animation_tree = $AnimationTree
 
+var animation_movement_state = 0
 var animation_state = 0
 var direction = Vector2()
 
@@ -32,18 +33,21 @@ func damage(v: int) -> int:
     if self.health < 0:
         print("dead")
     else:
+        animation_state = RootTreeAnimations.STUN
         animation_tree.set("parameters/root/current", RootTreeAnimations.STUN)
     return self.health
 
 
 func kick() -> void:
     if $Timers/KickTimer.is_stopped():
+        animation_state = RootTreeAnimations.KICK
         $Timers/KickTimer.start()
         animation_tree.set("parameters/root/current", RootTreeAnimations.KICK)
 
 
 func throw() -> void:
     if $Timers/BombTimer.is_stopped():
+        animation_state = RootTreeAnimations.THROW
         $Timers/BombTimer.start()
         animation_tree.set("parameters/root/current", RootTreeAnimations.THROW)
 
@@ -67,10 +71,11 @@ func __flip_sprite(x: int) -> void:
 
 
 func __animation_loop() -> void:
-    if abs(direction.x) > 0 or abs(direction.y) > 0:
-        animation_tree.set("parameters/movement/current", 1)
+    if abs(direction.x) > 0 or velocity.y < 0:
+        animation_movement_state = MovementTreeAnimations.WALK
     else:
-        animation_tree.set("parameters/movement/current", 0)
+        animation_movement_state = MovementTreeAnimations.IDLE
+    animation_tree.set("parameters/movement/current", animation_movement_state)
 
 
 func _ready():
