@@ -1,7 +1,9 @@
-[gd_scene load_steps=17 format=2]
+[gd_scene load_steps=18 format=2]
 
 [ext_resource path="res://actors/player/Player.gd" type="Script" id=1]
 [ext_resource path="res://actors/player/dinos.png" type="Texture" id=2]
+
+[sub_resource type="RectangleShape2D" id=16]
 
 [sub_resource type="CapsuleShape2D" id=4]
 radius = 5.0
@@ -10,7 +12,7 @@ height = 7.0
 [sub_resource type="Animation" id=5]
 length = 0.001
 tracks/0/type = "value"
-tracks/0/path = NodePath("../Sprite:frame")
+tracks/0/path = NodePath("../FlipContainer/Sprite:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
@@ -25,7 +27,7 @@ tracks/0/keys = {
 [sub_resource type="Animation" id=6]
 resource_name = "action_hurt"
 tracks/0/type = "value"
-tracks/0/path = NodePath("../Sprite:frame")
+tracks/0/path = NodePath("../FlipContainer/Sprite:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
@@ -56,7 +58,7 @@ resource_name = "action_kick"
 length = 0.8
 step = 0.2
 tracks/0/type = "value"
-tracks/0/path = NodePath("../Sprite:frame")
+tracks/0/path = NodePath("../FlipContainer/Sprite:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
@@ -86,7 +88,7 @@ tracks/1/keys = {
 resource_name = "move_idle_loop"
 loop = true
 tracks/0/type = "value"
-tracks/0/path = NodePath("../Sprite:frame")
+tracks/0/path = NodePath("../FlipContainer/Sprite:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
@@ -104,7 +106,7 @@ length = 1.2
 loop = true
 step = 0.2
 tracks/0/type = "value"
-tracks/0/path = NodePath("../Sprite:frame")
+tracks/0/path = NodePath("../FlipContainer/Sprite:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
@@ -175,7 +177,17 @@ script = ExtResource( 1 )
 current = true
 zoom = Vector2( 0.5, 0.5 )
 
-[node name="Sprite" type="Sprite" parent="."]
+[node name="FlipContainer" type="Node2D" parent="."]
+
+[node name="KickArea" type="Area2D" parent="FlipContainer"]
+position = Vector2( 10, 3 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="FlipContainer/KickArea"]
+modulate = Color( 0.27451, 1, 0.380392, 1 )
+scale = Vector2( 0.5, 0.5 )
+shape = SubResource( 16 )
+
+[node name="Sprite" type="Sprite" parent="FlipContainer"]
 texture = ExtResource( 2 )
 hframes = 24
 vframes = 4
@@ -187,8 +199,10 @@ shape = SubResource( 4 )
 [node name="Timers" type="Node" parent="."]
 
 [node name="BombTimer" type="Timer" parent="Timers"]
+one_shot = true
 
 [node name="KickTimer" type="Timer" parent="Timers"]
+one_shot = true
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 root_node = NodePath("../AnimationTree")
